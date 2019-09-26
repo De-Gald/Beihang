@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Arms extends JPanel {
 
@@ -13,12 +14,8 @@ public class Arms extends JPanel {
     int k1 = 1, k2 = 1;
     int additionalPoint = 1;
 
-    Runnable runnable = new Runnable() {
-        @Override
-        public void run() {
-
-        }
-    };
+    ArrayList<Point> points = new ArrayList<>();
+    ArrayList<Color> colors = new ArrayList<>();
 
     public static void main(String[] args) {
         System.out.println("Shall the show begin!!!");
@@ -58,7 +55,7 @@ public class Arms extends JPanel {
             point1.x = point2.x;
             point1.y = point2.y;
             point2.x += u;
-            draw(point1.x, point1.y, point2.x, point2.y, g);
+            draw(point1, point2, g.getColor());
             a(i - 1, g);
             k1 += additionalPoint;
             if (xy[k1][k2] == -1)
@@ -68,7 +65,7 @@ public class Arms extends JPanel {
             point1.x = point2.x;
             point1.y = point2.y;
             point2.y += u;
-            draw(point1.x, point1.y, point2.x, point2.y, g);
+            draw(point1, point2, g.getColor());
             a(i - 1, g);
             k2 -= additionalPoint;
             if (xy[k1][k2] == -1)
@@ -78,7 +75,7 @@ public class Arms extends JPanel {
             point1.x = point2.x;
             point1.y = point2.y;
             point2.x -= u;
-            draw(point1.x, point1.y, point2.x, point2.y, g);
+            draw(point1, point2, g.getColor());
             c(i - 1, g);
         }
     }
@@ -94,7 +91,7 @@ public class Arms extends JPanel {
             point1.x = point2.x;
             point1.y = point2.y;
             point2.x -= u;
-            draw(point1.x, point1.y, point2.x, point2.y, g);
+            draw(point1, point2, g.getColor());
             b(i - 1, g);
             k1 -= additionalPoint;
             if (xy[k1][k2] == -1)
@@ -104,7 +101,7 @@ public class Arms extends JPanel {
             point1.x = point2.x;
             point1.y = point2.y;
             point2.y -= u;
-            draw(point1.x, point1.y, point2.x, point2.y, g);
+            draw(point1, point2, g.getColor());
             b(i - 1, g);
             k2 += additionalPoint;
             if (xy[k1][k2] == -1)
@@ -114,7 +111,7 @@ public class Arms extends JPanel {
             point1.x = point2.x;
             point1.y = point2.y;
             point2.x += u;
-            draw(point1.x, point1.y, point2.x, point2.y, g);
+            draw(point1, point2, g.getColor());
             d(i - 1, g);
         }
     }
@@ -130,7 +127,7 @@ public class Arms extends JPanel {
             point1.x = point2.x;
             point1.y = point2.y;
             point2.y -= u;
-            draw(point1.x, point1.y, point2.x, point2.y, g);
+            draw(point1, point2, g.getColor());
             c(i - 1, g);
             k2 -= additionalPoint;
             if (xy[k1][k2] == -1)
@@ -140,7 +137,7 @@ public class Arms extends JPanel {
             point1.x = point2.x;
             point1.y = point2.y;
             point2.x -= u;
-            draw(point1.x, point1.y, point2.x, point2.y, g);
+            draw(point1, point2, g.getColor());
             c(i - 1, g);
             k1 += additionalPoint;
             if (xy[k1][k2] == -1)
@@ -150,7 +147,7 @@ public class Arms extends JPanel {
             point1.x = point2.x;
             point1.y = point2.y;
             point2.y += u;
-            draw(point1.x, point1.y, point2.x, point2.y, g);
+            draw(point1, point2, g.getColor());
             a(i - 1, g);
         }
     }
@@ -170,7 +167,7 @@ public class Arms extends JPanel {
             point1.x = point2.x;
             point1.y = point2.y;
             point2.y += u;
-            draw(point1.x, point1.y, point2.x, point2.y, g);
+            draw(point1, point2, g.getColor());
             d(i - 1, g);
             k2 += additionalPoint;
             if (xy[k1][k2] == -1)
@@ -180,7 +177,7 @@ public class Arms extends JPanel {
             point1.x = point2.x;
             point1.y = point2.y;
             point2.x += u;
-            draw(point1.x, point1.y, point2.x, point2.y, g);
+            draw(point1, point2, g.getColor());
             d(i - 1, g);
             k1 -= additionalPoint;
             if (xy[k1][k2] == -1)
@@ -190,12 +187,11 @@ public class Arms extends JPanel {
             point1.x = point2.x;
             point1.y = point2.y;
             point2.y -= u;
-            draw(point1.x, point1.y, point2.x, point2.y, g);
+            draw(point1, point2, g.getColor());
             b(i - 1, g);
         }
     }
 
-    Graphics graphics;
     public void paintComponent(Graphics g) {
         point1 = new Point();
         point2 = new Point();
@@ -203,23 +199,17 @@ public class Arms extends JPanel {
         point1.y = 20;
         point2.x = 20;
         point2.y = 20;
-        graphics = g;
         a(8, g);
+        System.out.println(points.size());
+        for (int i = 0; i < points.size(); i += 2) {
+            g.setColor(colors.get(i / 2));
+            g.drawLine(points.get(i).x, points.get(i).y, points.get(i + 1).x, points.get(i + 1).y);
+        }
     }
-    int count = 0;
 
-//    Runnable runnable = new Runnable() {
-//        @Override
-//        public void run() {
-//
-//        }
-//    };
-
-
-    void draw(int x1, int y1, int x2, int y2, Graphics g){
-        g.drawLine(x1, y1, x2, y2);
-        long currentTime = System.currentTimeMillis();
-//        System.out.println(count++);
-//        while (System.currentTimeMillis() - currentTime < 100);
+    void draw(Point point1, Point point2, Color color){
+        colors.add(color);
+        points.add(new Point(point1.x, point1.y));
+        points.add(new Point(point2.x, point2.y));
     }
 }
