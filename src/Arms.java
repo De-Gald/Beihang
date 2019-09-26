@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class Arms extends JPanel implements ActionListener {
@@ -31,7 +32,9 @@ public class Arms extends JPanel implements ActionListener {
         frame.setSize(650, 900);
         BufferedImage image = null;
         try {
-            image = ImageIO.read(new File("/Users/vladislav.de-gald/Documents/DrawLine/Logo.png"));
+            URL path = Arms.class.getResource("Logo.png");
+            File f = new File(path.getFile());
+            image = ImageIO.read(f);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -171,12 +174,12 @@ public class Arms extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
         indicator = false;
-        if ((factor <= 130500) && (factor > 4)){
+        if ((factor <= 131000) && (factor > 4)){
             timer.setDelay(1);
             factor -= 5;
             repaint();
             return;
-        } else if (factor > 130500){
+        } else if (factor > 131000){
             factor -= 1;
             repaint();
             return;
