@@ -1,29 +1,34 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class Arms extends JPanel {
+public class Arms extends JPanel implements ActionListener {
 
-    static float[][] xy = new float[300][300];
-    int u = 3;
-    Point point1, point2;
-    int k1 = 1, k2 = 1;
-    int additionalPoint = 1;
+    private static float[][] xy = new float[300][300];
+    private static final int u = 3;
+    private static Point point1, point2;
+    private  int k1 = 1, k2 = 1;
+    private static final int additionalPoint = 1;
+    Timer timer = new Timer(100, this);
+    int factor = 131069;
+    boolean indicator = true;
 
-    ArrayList<Point> points = new ArrayList<>();
-    ArrayList<Color> colors = new ArrayList<>();
+    private ArrayList<Point> points = new ArrayList<>();
+    private ArrayList<Color> colors = new ArrayList<>();
 
     public static void main(String[] args) {
-        System.out.println("Shall the show begin!!!");
 
         JFrame.setDefaultLookAndFeelDecorated(true);
         JFrame frame = new JFrame("Guess");
         frame.setBackground(Color.white);
-        frame.setSize(1000, 1200);
+        frame.setResizable(true);
+        frame.setSize(650, 900);
         BufferedImage image = null;
         try {
             image = ImageIO.read(new File("/Users/vladislav.de-gald/Documents/DrawLine/Logo.png"));
@@ -40,7 +45,17 @@ public class Arms extends JPanel {
         Arms panel = new Arms();
         frame.add(panel);
 
+        point1 = new Point();
+        point2 = new Point();
+    }
 
+    public void fragment(Graphics g){
+        if (xy[k1][k2] == -1)
+            g.setColor(Color.RED);
+        else
+            g.setColor(Color.YELLOW);
+        point1.x = point2.x;
+        point1.y = point2.y;
     }
 
 
@@ -48,34 +63,19 @@ public class Arms extends JPanel {
         if (i > 0) {
             d(i - 1, g);
             k2 += additionalPoint;
-            if (xy[k1][k2] == -1)
-                g.setColor(Color.RED);
-            else
-                g.setColor(Color.YELLOW);
-            point1.x = point2.x;
-            point1.y = point2.y;
+            fragment(g);
             point2.x += u;
-            draw(point1, point2, g.getColor());
+            savePoint(point1, point2, g.getColor());
             a(i - 1, g);
             k1 += additionalPoint;
-            if (xy[k1][k2] == -1)
-                g.setColor(Color.RED);
-            else
-                g.setColor(Color.YELLOW);
-            point1.x = point2.x;
-            point1.y = point2.y;
+            fragment(g);
             point2.y += u;
-            draw(point1, point2, g.getColor());
+            savePoint(point1, point2, g.getColor());
             a(i - 1, g);
-            k2 -= additionalPoint;
-            if (xy[k1][k2] == -1)
-                g.setColor(Color.RED);
-            else
-                g.setColor(Color.YELLOW);
-            point1.x = point2.x;
-            point1.y = point2.y;
+             k2 -= additionalPoint;
+            fragment(g);
             point2.x -= u;
-            draw(point1, point2, g.getColor());
+            savePoint(point1, point2, g.getColor());
             c(i - 1, g);
         }
     }
@@ -84,34 +84,19 @@ public class Arms extends JPanel {
         if (i > 0) {
             c(i - 1, g);
             k2 -= additionalPoint;
-            if (xy[k1][k2] == -1)
-                g.setColor(Color.RED);
-            else
-                g.setColor(Color.YELLOW);
-            point1.x = point2.x;
-            point1.y = point2.y;
+            fragment(g);
             point2.x -= u;
-            draw(point1, point2, g.getColor());
+            savePoint(point1, point2, g.getColor());
             b(i - 1, g);
             k1 -= additionalPoint;
-            if (xy[k1][k2] == -1)
-                g.setColor(Color.RED);
-            else
-                g.setColor(Color.YELLOW);
-            point1.x = point2.x;
-            point1.y = point2.y;
+            fragment(g);
             point2.y -= u;
-            draw(point1, point2, g.getColor());
+            savePoint(point1, point2, g.getColor());
             b(i - 1, g);
             k2 += additionalPoint;
-            if (xy[k1][k2] == -1)
-                g.setColor(Color.RED);
-            else
-                g.setColor(Color.YELLOW);
-            point1.x = point2.x;
-            point1.y = point2.y;
+            fragment(g);
             point2.x += u;
-            draw(point1, point2, g.getColor());
+            savePoint(point1, point2, g.getColor());
             d(i - 1, g);
         }
     }
@@ -120,34 +105,19 @@ public class Arms extends JPanel {
         if (i > 0) {
             b(i - 1, g);
             k1 -= additionalPoint;
-            if (xy[k1][k2] == -1)
-                g.setColor(Color.RED);
-            else
-                g.setColor(Color.YELLOW);
-            point1.x = point2.x;
-            point1.y = point2.y;
+            fragment(g);
             point2.y -= u;
-            draw(point1, point2, g.getColor());
+            savePoint(point1, point2, g.getColor());
             c(i - 1, g);
             k2 -= additionalPoint;
-            if (xy[k1][k2] == -1)
-                g.setColor(Color.RED);
-            else
-                g.setColor(Color.YELLOW);
-            point1.x = point2.x;
-            point1.y = point2.y;
+            fragment(g);
             point2.x -= u;
-            draw(point1, point2, g.getColor());
+            savePoint(point1, point2, g.getColor());
             c(i - 1, g);
             k1 += additionalPoint;
-            if (xy[k1][k2] == -1)
-                g.setColor(Color.RED);
-            else
-                g.setColor(Color.YELLOW);
-            point1.x = point2.x;
-            point1.y = point2.y;
+            fragment(g);
             point2.y += u;
-            draw(point1, point2, g.getColor());
+            savePoint(point1, point2, g.getColor());
             a(i - 1, g);
         }
     }
@@ -167,49 +137,50 @@ public class Arms extends JPanel {
             point1.x = point2.x;
             point1.y = point2.y;
             point2.y += u;
-            draw(point1, point2, g.getColor());
+            savePoint(point1, point2, g.getColor());
             d(i - 1, g);
             k2 += additionalPoint;
-            if (xy[k1][k2] == -1)
-                g.setColor(Color.RED);
-            else
-                g.setColor(Color.YELLOW);
-            point1.x = point2.x;
-            point1.y = point2.y;
+            fragment(g);
             point2.x += u;
-            draw(point1, point2, g.getColor());
+            savePoint(point1, point2, g.getColor());
             d(i - 1, g);
             k1 -= additionalPoint;
-            if (xy[k1][k2] == -1)
-                g.setColor(Color.RED);
-            else
-                g.setColor(Color.YELLOW);
-            point1.x = point2.x;
-            point1.y = point2.y;
+            fragment(g);
             point2.y -= u;
-            draw(point1, point2, g.getColor());
+            savePoint(point1, point2, g.getColor());
             b(i - 1, g);
         }
     }
 
     public void paintComponent(Graphics g) {
-        point1 = new Point();
-        point2 = new Point();
-        point1.x = 20;
-        point1.y = 20;
-        point2.x = 20;
-        point2.y = 20;
-        a(8, g);
-        System.out.println(points.size());
-        for (int i = 0; i < points.size(); i += 2) {
+        if (indicator)
+            a(8, g);
+        for (int i = 0; i < points.size() - factor; i += 2) {
             g.setColor(colors.get(i / 2));
             g.drawLine(points.get(i).x, points.get(i).y, points.get(i + 1).x, points.get(i + 1).y);
         }
+        timer.start();
     }
 
-    void draw(Point point1, Point point2, Color color){
+    void savePoint(Point point1, Point point2, Color color) {
         colors.add(color);
         points.add(new Point(point1.x, point1.y));
         points.add(new Point(point2.x, point2.y));
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent actionEvent) {
+        indicator = false;
+        if ((factor <= 130500) && (factor > 4)){
+            timer.setDelay(1);
+            factor -= 5;
+            repaint();
+            return;
+        } else if (factor > 130500){
+            factor -= 1;
+            repaint();
+            return;
+        } else
+            timer.stop();
     }
 }
